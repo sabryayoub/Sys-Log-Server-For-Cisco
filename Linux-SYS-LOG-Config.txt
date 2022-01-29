@@ -1,0 +1,134 @@
+=============================================================
+Linix Config
+=============================================================
+
+#yum -y install rsyslog
+
+#vi /etc/rsyslog.conf
+
+============================================================================================================================
+Uncomment "#" the following to enable the syslog server to listen on the UDP & TCP protocol if you want on port num: "514"
+============================================================================================================================
+
+=====
+UDP:
+=====
+
+From:
+=====
+
+# Provides UDP syslog reception
+#$ModLoad imudp
+#$UDPServerRun 514
+
+TO:
+===
+
+# Provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun 514
+
+
+TCP:
+====
+
+=====
+From:
+=====
+
+# Provides TCP syslog reception
+#$ModLoad imtcp
+#$InputTCPServerRun 514
+
+
+
+TO:
+===
+
+# Provides TCP syslog reception
+$ModLoad imtcp
+$InputTCPServerRun 514
+
+======================================
+
+To enable remote host add these under "Rules Section"
+
+
+======
+Rules
+======
+
+
+$template Remote,"/var/log/syslogs/%fromhost-ip%-.log"
+*.* ?Remote
+& ~
+
+
+:wq
+
+=======================================================================
+
+
+=============================
+To restart syslog server:
+=============================
+
+#systemctl restart rsyslog
+
+
+
+Verify the syslog server listening on the port 514
+==================================================
+
+#netstat -antup | grep 514
+
+
+
+output
+=======
+
+udp        0      0 0.0.0.0:514             0.0.0.0:*                           1467/rsyslogd
+udp6       0      0 :::514                  :::*                                1467/rsyslogd
+
+
+=================================================================================================================
+
+
+
+
+=========
+Firewall:
+=========
+
+
+Mostly all the production environments are protected by a hardware firewall, ask them to open the TCP & UDP 514.
+
+If you have FirewallD enabled, run the following command on a server in order to accept incoming traffic on UDP / TCP port 514.
+
+
+TCP
+===
+
+#firewall-cmd --permanent --add-port=514/tcp
+#firewall-cmd --reload
+
+UDP
+===
+
+
+#firewall-cmd --permanent --add-port=514/udp 
+
+#firewall-cmd --reload
+
+
+
+=========
+Validate:
+=========
+
+#tail -f /var/log/messages
+#cd /etc/rsyslog
+#ll
+#cat "any file under etc/rsyslog
+
+

@@ -1,0 +1,32 @@
+=============================================================
+RW Config
+=============================================================
+
+#logging buffered 100000 informational
+
+#logging trap informational
+
+#logging source-interface 
+
+#logging host "IP" session-id hostname
+
+#logging "IP"
+
+#logging on
+
+#service timestamps log datetime
+
+#logging host "IP" session-id hostname
+
+#archive
+
+#log config
+
+#logging enable
+
+#logging size 1000
+
+#notify syslog contenttype plaintext
+
+#hidekeys
+
